@@ -434,6 +434,22 @@ test('parse - @function', function() {
     kind: 'function',
     name: 'name'
   });
+
+  // When @function takes a name, it is acting as a shorthand for @name and
+  // should detach from code the same way @name does.
+  expect(
+    evaluate(function() {
+      /** @function */
+      function foo() {}
+    })[0].context.ast
+  ).toBeDefined();
+
+  expect(
+    evaluate(function() {
+      /** @function name */
+      function foo() {}
+    })[0].context.ast
+  ).toBeUndefined();
 });
 
 test('parse - @global', function() {
@@ -442,6 +458,14 @@ test('parse - @global', function() {
       /** @global */
     })[0].scope
   ).toBe('global');
+});
+
+test('parse - @hideconstructor', function() {
+  expect(
+    evaluate(function() {
+      /** @hideconstructor */
+    })[0].hideconstructor
+  ).toBe(true);
 });
 
 test('parse - @host', function() {});
@@ -640,6 +664,13 @@ test('parse - @name', function() {
       /** @name test */
     })[0].name
   ).toBe('test');
+
+  expect(
+    evaluate(function() {
+      /** @name foo */
+      const bar = 0;
+    })[0].context.ast
+  ).toBeUndefined();
 });
 
 test('parse - @namespace', function() {

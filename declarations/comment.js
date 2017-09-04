@@ -44,7 +44,7 @@ type SourceFile = {
 type CommentContext = {
   sortKey: string,
   file: string,
-  ast: Object,
+  ast?: Object,
   loc: CommentLoc,
   code: string,
   github?: CommentContextGitHub
@@ -84,6 +84,7 @@ type Comment = {
   classdesc?: Remark,
 
   members: CommentMembers,
+  constructorComment?: Comment,
 
   name?: string,
   kind?: Kind,
@@ -100,6 +101,7 @@ type Comment = {
   since?: string,
   lends?: string,
   override?: boolean,
+  hideconstructor?: true,
 
   type?: DoctrineType,
 
